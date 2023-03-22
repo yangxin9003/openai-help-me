@@ -1,9 +1,4 @@
-'use strict';
-
 chrome.runtime.onInstalled.addListener(async () => {
-    chrome.action.onClicked.addListener(() => {
-        chrome.runtime.openOptionsPage()
-    })
     chrome.contextMenus.create({
         id: 'ask',
         title: 'Ask',
@@ -20,7 +15,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 chrome.contextMenus.onClicked.addListener(async (item, tab) => {
     const id = item.menuItemId;
-    if (id) {
+    if (id && tab?.id) {
         chrome.tabs.sendMessage(tab.id, {
             type: id,
             // content: item.selectionText
@@ -28,3 +23,8 @@ chrome.contextMenus.onClicked.addListener(async (item, tab) => {
     }
 });
 
+chrome.action.onClicked.addListener(() => {
+    chrome.runtime.openOptionsPage()
+})
+
+export {}

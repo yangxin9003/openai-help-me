@@ -7,13 +7,13 @@ const PATHS = require('./paths');
 
 // Merge webpack configuration files
 const config = (env, argv) =>
-  merge(common, {
-    entry: {
-      options: PATHS.src + '/options.js',
-      contentScript: PATHS.src + '/contentScript.js',
-      background: PATHS.src + '/background.js',
-    },
-    devtool: argv.mode === 'production' ? false : 'source-map',
-  });
+    merge(common, {
+        entry: {
+            options: PATHS.src + '/options.tsx',
+            contentScript: PATHS.src + '/contentScript.tsx',
+            background: PATHS.src + '/background.ts',
+        },
+        devtool: argv.mode === 'production' ? false : 'source-map',
+    });
 
 module.exports = config;

@@ -1,10 +1,9 @@
-'use strict';
 import React from 'react'
 import { createRoot } from 'react-dom/client';
-import ResultModal from "./result-modal.js";
+import ResultModal from "./result-modal";
 
-chrome.runtime.onMessage.addListener(async (message) => {
-    const selectionText = window.getSelection().toString()
+chrome.runtime.onMessage.addListener((message, sender, response) => {
+    const selectionText = window.getSelection()?.toString() || ''
     if (!selectionText.replace(/\s/g, '')) {
         return
     }
@@ -22,5 +21,6 @@ chrome.runtime.onMessage.addListener(async (message) => {
     } catch (e) {
         rootEl.remove()
     }
+    return true
 })
 

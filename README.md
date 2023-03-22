@@ -1,21 +1,21 @@
 # <img src="public/icons/icon_48.png" width="45" align="left"> Openai Help Me
 
-My Chrome Extension
+A chrome extension for open AI
 
-## Features
+## build
+```sh
+pnpm i
+```
 
-- Feature 1
-- Feature 2
+and
 
-## Install
+```sh
+pnpm run build
+```
 
-[**Chrome** extension]() <!-- TODO: Add chrome extension link inside parenthesis -->
+## todo
+1. 支持copy按钮（现在因为拖放不能选中结果内容）
+2. 支持自定义菜单和对应的question
+3. 支持对话
 
-## Contribution
-
-Suggestions and pull requests are welcomed!.
-
----
-
-This project was bootstrapped with [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
-
+##

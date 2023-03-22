@@ -13,6 +13,9 @@ const IMAGE_TYPES = /\.(png|jpe?g|gif|svg)$/i;
 // Whenever user creates an extension, CLI adds `webpack.common.js` file
 // in template's `config` folder
 const common = {
+    resolve: {
+        extensions: [".ts", ".tsx", ".js", ".jsx"]
+    },
     output: {
         // the build folder to output bundles and assets in.
         path: PATHS.build,
@@ -46,13 +49,7 @@ const common = {
                     },
                 ],
             },
-            {
-                test: /\.m?jsx?$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader'
-                }
-            }
+            { test: /\.([cm]?ts|tsx)$/, loader: "ts-loader" }
         ],
     },
     plugins: [

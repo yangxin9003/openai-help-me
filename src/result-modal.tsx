@@ -3,10 +3,12 @@ import { Modal } from 'antd';
 import {LoadingOutlined} from '@ant-design/icons'
 import { Configuration, OpenAIApi } from "openai";
 import Draggable from 'react-draggable';
-import {apiKeyStorage} from './constanst.js'
+import type {DraggableEvent, DraggableData} from 'react-draggable';
+import {apiKeyStorage} from './constant'
 import './result-modal.css'
 
-let _openAI = null
+let _openAI: OpenAIApi
+
 async function getOpenAIInstance () {
     if (!_openAI) {
         const storageResult = await chrome.storage.local.get(apiKeyStorage)
@@ -17,32 +19,43 @@ async function getOpenAIInstance () {
     return _openAI
 }
 
-async function askOpenAI(question) {
+async function askOpenAI(question: string) {
     const openAI = await getOpenAIInstance()
     const response = await openAI.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: [{"role": "user", "content": question}]
+    }, {
+        timeout: 1800000
     });
-    return response.data.choices[0].message.content
+    return response?.data?.choices?.[0]?.message?.content
 }
 
-function ResultModal ({question, afterClose}) {
+type Props = {
+    question: string,
+    afterClose: () => void
+}
+function ResultModal (props: Props) {
+    const {question, afterClose } = props
     const [open, setOpen] = useState(true);
     const [result, setResult] = useState('');
     const [loading, setLoading] = useState(false);
     const [bounds, setBounds] = useState({ left: 0, top: 0, bottom: 0, right: 0 });
-    const draggleRef = useRef(null);
+    const draggleRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setLoading(true)
-        askOpenAI(question).then(answer => setResult(answer)).finally(() => setLoading(false))
+        askOpenAI(question).then(answer => {
+            setResult(answer || '')
+        }).finally(() => {
+            setLoading(false)
+        })
     }, [])
 
-    const handleCancel = (e) => {
+    const handleCancel = () => {
         setOpen(false);
     };
 
-    const onStart = (_event, uiData) => {
+    const onStart = (_event: DraggableEvent, uiData: DraggableData) => {
         const { clientWidth, clientHeight } = window.document.documentElement;
         const targetRect = draggleRef.current?.getBoundingClientRect();
         if (!targetRect) {
