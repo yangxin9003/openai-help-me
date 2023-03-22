@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useInsertionEffect, useRef, useState } from 'react';
 import { Modal, Divider } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Configuration, OpenAIApi } from 'openai';
@@ -59,6 +59,12 @@ function ResultModal(props: Props) {
     const handleCancel = () => {
         setOpen(false);
     };
+
+    useInsertionEffect(() => {
+        Promise.resolve(true).then(() => {
+            document.head.querySelector('[rc-util-key ^= rc-util-locker]:last-child')?.remove();
+        });
+    });
 
     const onStart = (_event: DraggableEvent, uiData: DraggableData) => {
         const { clientWidth, clientHeight } = window.document.documentElement;
