@@ -1,7 +1,7 @@
 {
     "name": "openai-help-me",
     "version": "0.1.0",
-    "description": "My Chrome Extension",
+    "description": "A chrome extension for open AI",
     "private": true,
     "scripts": {
         "watch": "webpack --mode=development --watch --config config/webpack.config.js",
