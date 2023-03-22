@@ -1,41 +1,44 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Modal } from 'antd';
-import {LoadingOutlined} from '@ant-design/icons'
-import { Configuration, OpenAIApi } from "openai";
+import { LoadingOutlined } from '@ant-design/icons';
+import { Configuration, OpenAIApi } from 'openai';
 import Draggable from 'react-draggable';
-import type {DraggableEvent, DraggableData} from 'react-draggable';
-import {apiKeyStorage} from './constant'
-import './result-modal.css'
+import type { DraggableEvent, DraggableData } from 'react-draggable';
+import { apiKeyStorage } from './constant';
+import './result-modal.css';
 
-let _openAI: OpenAIApi
+let _openAI: OpenAIApi;
 
-async function getOpenAIInstance () {
+async function getOpenAIInstance() {
     if (!_openAI) {
-        const storageResult = await chrome.storage.local.get(apiKeyStorage)
-        const apiKey = storageResult[apiKeyStorage]
-        const configuration = new Configuration({apiKey});
+        const storageResult = await chrome.storage.local.get(apiKeyStorage);
+        const apiKey = storageResult[apiKeyStorage];
+        const configuration = new Configuration({ apiKey });
         _openAI = new OpenAIApi(configuration);
     }
-    return _openAI
+    return _openAI;
 }
 
 async function askOpenAI(question: string) {
-    const openAI = await getOpenAIInstance()
-    const response = await openAI.createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        messages: [{"role": "user", "content": question}]
-    }, {
-        timeout: 1800000
-    });
-    return response?.data?.choices?.[0]?.message?.content
+    const openAI = await getOpenAIInstance();
+    const response = await openAI.createChatCompletion(
+        {
+            model: 'gpt-3.5-turbo',
+            messages: [{ role: 'user', content: question }],
+        },
+        {
+            timeout: 1800000,
+        }
+    );
+    return response?.data?.choices?.[0]?.message?.content;
 }
 
 type Props = {
-    question: string,
-    afterClose: () => void
-}
-function ResultModal (props: Props) {
-    const {question, afterClose } = props
+    question: string;
+    afterClose: () => void;
+};
+function ResultModal(props: Props) {
+    const { question, afterClose } = props;
     const [open, setOpen] = useState(true);
     const [result, setResult] = useState('');
     const [loading, setLoading] = useState(false);
@@ -43,13 +46,15 @@ function ResultModal (props: Props) {
     const draggleRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setLoading(true)
-        askOpenAI(question).then(answer => {
-            setResult(answer || '')
-        }).finally(() => {
-            setLoading(false)
-        })
-    }, [])
+        setLoading(true);
+        askOpenAI(question)
+            .then((answer) => {
+                setResult(answer || '');
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
 
     const handleCancel = () => {
         setOpen(false);
@@ -69,36 +74,29 @@ function ResultModal (props: Props) {
         });
     };
 
-    return  <Modal
-                afterClose={afterClose}
-                destroyOnClose={true}
-                mask={false}
-                maskClosable={false}
-                style={{
-                    cursor: 'move',
-                }}
-                wrapClassName="open-ai-result-modal-wrap"
-                title="OpenAI:"
-                open={open}
-                footer={null}
-                onCancel={handleCancel}
-                modalRender={(modal) => (
-                    <Draggable
-                        bounds={bounds}
-                        onStart={(event, uiData) => onStart(event, uiData)}
-                    >
-                        <div ref={draggleRef}>{modal}</div>
-                    </Draggable>
-                )}
-            >
-                {
-                loading
-                    ? <LoadingOutlined/>
-                    : <pre style={{whiteSpace: 'pre-wrap'}}>
-                        {result}
-                    </pre>
-                }
-            </Modal>;
-};
+    return (
+        <Modal
+            afterClose={afterClose}
+            destroyOnClose={true}
+            mask={false}
+            maskClosable={false}
+            style={{
+                cursor: 'move',
+            }}
+            wrapClassName="open-ai-result-modal-wrap"
+            title="OpenAI:"
+            open={open}
+            footer={null}
+            onCancel={handleCancel}
+            modalRender={(modal) => (
+                <Draggable bounds={bounds} onStart={(event, uiData) => onStart(event, uiData)}>
+                    <div ref={draggleRef}>{modal}</div>
+                </Draggable>
+            )}
+        >
+            {loading ? <LoadingOutlined /> : <pre style={{ whiteSpace: 'pre-wrap' }}>{result}</pre>}
+        </Modal>
+    );
+}
 
 export default ResultModal;

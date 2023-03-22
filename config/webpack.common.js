@@ -14,7 +14,7 @@ const IMAGE_TYPES = /\.(png|jpe?g|gif|svg)$/i;
 // in template's `config` folder
 const common = {
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".jsx"]
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
     output: {
         // the build folder to output bundles and assets in.
@@ -49,7 +49,7 @@ const common = {
                     },
                 ],
             },
-            { test: /\.([cm]?ts|tsx)$/, loader: "ts-loader" }
+            { test: /\.([cm]?ts|tsx)$/, loader: 'ts-loader' },
         ],
     },
     plugins: [

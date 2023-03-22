@@ -3,13 +3,13 @@ chrome.runtime.onInstalled.addListener(async () => {
         id: 'ask',
         title: 'Ask',
         type: 'normal',
-        contexts: ['selection']
+        contexts: ['selection'],
     });
     chrome.contextMenus.create({
         id: 'translate',
         title: 'Translate',
         type: 'normal',
-        contexts: ['selection']
+        contexts: ['selection'],
     });
 });
 
@@ -19,12 +19,12 @@ chrome.contextMenus.onClicked.addListener(async (item, tab) => {
         chrome.tabs.sendMessage(tab.id, {
             type: id,
             // content: item.selectionText
-        })
+        });
     }
 });
 
 chrome.action.onClicked.addListener(() => {
-    chrome.runtime.openOptionsPage()
-})
+    chrome.runtime.openOptionsPage();
+});
 
-export {}
+export {};
