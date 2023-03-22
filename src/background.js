@@ -1,21 +1,30 @@
 'use strict';
 
-// With background scripts you can communicate with popup
-// and contentScript files.
-// For more information on background script,
-// See https://developer.chrome.com/extensions/background_pages
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'GREETINGS') {
-    const message = `Hi ${
-      sender.tab ? 'Con' : 'Pop'
-    }, my name is Bac. I am from Background. It's great to hear from you.`;
-
-    // Log message coming from the `request` parameter
-    console.log(request.payload.message);
-    // Send a response message
-    sendResponse({
-      message,
+chrome.runtime.onInstalled.addListener(async () => {
+    chrome.action.onClicked.addListener(() => {
+        chrome.runtime.openOptionsPage()
+    })
+    chrome.contextMenus.create({
+        id: 'ask',
+        title: 'Ask',
+        type: 'normal',
+        contexts: ['selection']
     });
-  }
+    chrome.contextMenus.create({
+        id: 'translate',
+        title: 'Translate',
+        type: 'normal',
+        contexts: ['selection']
+    });
 });
+
+chrome.contextMenus.onClicked.addListener(async (item, tab) => {
+    const id = item.menuItemId;
+    if (id) {
+        chrome.tabs.sendMessage(tab.id, {
+            type: id,
+            // content: item.selectionText
+        })
+    }
+});
+
