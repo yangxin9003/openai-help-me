@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Modal } from 'antd';
+import { Modal, Divider } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Configuration, OpenAIApi } from 'openai';
 import Draggable from 'react-draggable';
@@ -30,7 +30,7 @@ async function askOpenAI(question: string) {
             timeout: 1800000,
         }
     );
-    return response?.data?.choices?.[0]?.message?.content;
+    return response?.data?.choices?.[0]?.message?.content?.trim();
 }
 
 type Props = {
@@ -84,7 +84,7 @@ function ResultModal(props: Props) {
                 cursor: 'move',
             }}
             wrapClassName="open-ai-result-modal-wrap"
-            title="OpenAI:"
+            title="OpenAI help me!"
             open={open}
             footer={null}
             onCancel={handleCancel}
@@ -94,7 +94,14 @@ function ResultModal(props: Props) {
                 </Draggable>
             )}
         >
-            {loading ? <LoadingOutlined /> : <pre style={{ whiteSpace: 'pre-wrap' }}>{result}</pre>}
+            <div className="open-ai-result-modal-content">
+                <Divider orientation="left">question:</Divider>
+                <div className="question">
+                    <pre>{question}</pre>
+                </div>
+                <Divider orientation="left">answer:</Divider>
+                <div className="answer">{loading ? <LoadingOutlined /> : <pre>{result}</pre>}</div>
+            </div>
         </Modal>
     );
 }

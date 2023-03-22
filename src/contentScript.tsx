@@ -15,11 +15,11 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
         if (message.type === 'ask') {
             question = selectionText;
         } else if (message.type === 'translate') {
-            question = `Translate the following Text to chinese: ${selectionText}`;
+            question = `Translate the following Text to chinese:\n\n "${selectionText}"`;
         }
         root.render(<ResultModal question={question} afterClose={() => rootEl.remove()} />);
     } catch (e) {
         rootEl.remove();
     }
-    return true;
+    return false;
 });
