@@ -1,6 +1,5 @@
 import React, { useEffect, useInsertionEffect, useRef, useState } from 'react';
-import { Modal, Divider } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { Modal, Divider, Spin } from 'antd';
 import { Configuration, OpenAIApi } from 'openai';
 import Draggable from 'react-draggable';
 import type { DraggableEvent, DraggableData } from 'react-draggable';
@@ -8,6 +7,14 @@ import { apiKeyStorage } from './constant';
 import './result-modal.css';
 
 let _openAI: OpenAIApi;
+
+const setRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
+XMLHttpRequest.prototype.setRequestHeader = function newSetRequestHeader(key: string, val: string) {
+    if (key.toLocaleLowerCase() === 'user-agent') {
+        return;
+    }
+    setRequestHeader.apply(this, [key, val]);
+};
 
 async function getOpenAIInstance() {
     if (!_openAI) {
@@ -41,6 +48,7 @@ function ResultModal(props: Props) {
     const { question, afterClose } = props;
     const [open, setOpen] = useState(true);
     const [result, setResult] = useState('');
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [bounds, setBounds] = useState({ left: 0, top: 0, bottom: 0, right: 0 });
     const draggleRef = useRef<HTMLDivElement>(null);
@@ -50,6 +58,9 @@ function ResultModal(props: Props) {
         askOpenAI(question)
             .then((answer) => {
                 setResult(answer || '');
+            })
+            .catch((e: any) => {
+                setError(e.message);
             })
             .finally(() => {
                 setLoading(false);
@@ -106,7 +117,15 @@ function ResultModal(props: Props) {
                     <pre>{question}</pre>
                 </div>
                 <Divider orientation="left">answer:</Divider>
-                <div className="answer">{loading ? <LoadingOutlined /> : <pre>{result}</pre>}</div>
+                <div className="answer">
+                    {loading ? (
+                        <Spin />
+                    ) : error ? (
+                        <span className="error">{error}</span>
+                    ) : (
+                        <pre>{result}</pre>
+                    )}
+                </div>
             </div>
         </Modal>
     );

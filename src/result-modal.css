@@ -24,3 +24,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.open-ai-result-modal-content pre .error {
+    color: #b3261e;
+}
