@@ -17,11 +17,14 @@
     },
     "options_page": "options.html",
     "permissions": ["storage", "contextMenus"],
+    "host_permissions": [
+        "*://playground.turms.im/*"
+    ],
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
             "run_at": "document_idle",
-            "js": ["contentScript.js"],
+            "js": ["contentScript.js","js/business.js"],
             "css": ["contentScript.css"]
         }
     ]
