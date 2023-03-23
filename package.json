@@ -26,6 +26,7 @@
         "webpack-merge": "^5.8.0"
     },
     "dependencies": {
+        "@ant-design/cssinjs": "^1.6.1",
         "antd": "^5.3.2",
         "chrome-types": "^0.1.179",
         "openai": "^3.2.1",

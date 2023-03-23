@@ -1,10 +1,9 @@
-import React, { useEffect, useInsertionEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Modal, Divider, Spin } from 'antd';
 import { Configuration, OpenAIApi } from 'openai';
 import Draggable from 'react-draggable';
 import type { DraggableEvent, DraggableData } from 'react-draggable';
 import { apiKeyStorage } from './constant';
-import './result-modal.css';
 
 let _openAI: OpenAIApi;
 
@@ -42,10 +41,11 @@ async function askOpenAI(question: string) {
 
 type Props = {
     question: string;
+    container: HTMLElement;
     afterClose: () => void;
 };
 function ResultModal(props: Props) {
-    const { question, afterClose } = props;
+    const { question, afterClose, container } = props;
     const [open, setOpen] = useState(true);
     const [result, setResult] = useState('');
     const [error, setError] = useState('');
@@ -71,12 +71,6 @@ function ResultModal(props: Props) {
         setOpen(false);
     };
 
-    useInsertionEffect(() => {
-        Promise.resolve(true).then(() => {
-            document.head.querySelector('[rc-util-key ^= rc-util-locker]:last-child')?.remove();
-        });
-    });
-
     const onStart = (_event: DraggableEvent, uiData: DraggableData) => {
         const { clientWidth, clientHeight } = window.document.documentElement;
         const targetRect = draggleRef.current?.getBoundingClientRect();
@@ -93,6 +87,7 @@ function ResultModal(props: Props) {
 
     return (
         <Modal
+            getContainer={container}
             afterClose={afterClose}
             destroyOnClose={true}
             mask={false}

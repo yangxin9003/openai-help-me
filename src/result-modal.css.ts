@@ -1,7 +1,7 @@
+export default `
 .open-ai-result-modal-wrap {
     pointer-events: none;
 }
-
 .open-ai-result-modal-content .open-ai-result-modal-content-answer {
     max-height: 300px;
     overflow: auto;
@@ -24,7 +24,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-
 .open-ai-result-modal-content pre.open-ai-result-modal-content-error {
     color: #b3261e;
 }
+`;
