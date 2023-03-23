@@ -2,11 +2,11 @@
     pointer-events: none;
 }
 
-.open-ai-result-modal-content .answer {
+.open-ai-result-modal-content .open-ai-result-modal-content-answer {
     max-height: 300px;
     overflow: auto;
 }
-.open-ai-result-modal-content .question {
+.open-ai-result-modal-content .open-ai-result-modal-content-question {
     max-height: 100px;
     overflow: auto;
 }
@@ -25,6 +25,6 @@
     border-radius: 4px;
 }
 
-.open-ai-result-modal-content pre .error {
+.open-ai-result-modal-content pre.open-ai-result-modal-content-error {
     color: #b3261e;
 }

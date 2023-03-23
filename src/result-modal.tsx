@@ -113,15 +113,15 @@ function ResultModal(props: Props) {
         >
             <div className="open-ai-result-modal-content">
                 <Divider orientation="left">question:</Divider>
-                <div className="question">
+                <div className="open-ai-result-modal-content-question">
                     <pre>{question}</pre>
                 </div>
                 <Divider orientation="left">answer:</Divider>
-                <div className="answer">
+                <div className="open-ai-result-modal-content-answer">
                     {loading ? (
                         <Spin />
                     ) : error ? (
-                        <span className="error">{error}</span>
+                        <pre className="open-ai-result-modal-content-error">{error}</pre>
                     ) : (
                         <pre>{result}</pre>
                     )}
