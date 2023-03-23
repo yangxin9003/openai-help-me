@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Modal, Divider, Spin } from 'antd';
+import { Button, Modal, Divider, Spin } from 'antd';
 import { Configuration, OpenAIApi } from 'openai';
 import Draggable from 'react-draggable';
 import type { DraggableEvent, DraggableData } from 'react-draggable';
@@ -121,6 +121,16 @@ function ResultModal(props: Props) {
                         <pre>{result}</pre>
                     )}
                 </div>
+                {!loading && (
+                    <Button
+                        style={{ marginTop: 8 }}
+                        type="primary"
+                        size="small"
+                        onClick={() => navigator.clipboard.writeText(result)}
+                    >
+                        copy
+                    </Button>
+                )}
             </div>
         </Modal>
     );
