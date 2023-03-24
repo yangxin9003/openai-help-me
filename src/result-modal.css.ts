@@ -1,5 +1,6 @@
 export default `
 .open-ai-result-modal-wrap {
+    text-align: left;
     pointer-events: none;
 }
 .open-ai-result-modal-content .open-ai-result-modal-content-answer {

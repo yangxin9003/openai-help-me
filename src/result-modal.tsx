@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Modal, Divider, Spin } from 'antd';
 import { Configuration, OpenAIApi } from 'openai';
 import Draggable from 'react-draggable';
@@ -25,7 +25,7 @@ async function getOpenAIInstance() {
     return _openAI;
 }
 
-async function askOpenAI(question: string) {
+async function askOpenAI(question: string, signal?: AbortSignal) {
     const openAI = await getOpenAIInstance();
     const response = await openAI.createChatCompletion(
         {
@@ -34,6 +34,7 @@ async function askOpenAI(question: string) {
         },
         {
             timeout: 1800000,
+            signal,
         }
     );
     return response?.data?.choices?.[0]?.message?.content?.trim();
@@ -53,9 +54,10 @@ function ResultModal(props: Props) {
     const [bounds, setBounds] = useState({ left: 0, top: 0, bottom: 0, right: 0 });
     const draggleRef = useRef<HTMLDivElement>(null);
 
+    const controller = useMemo(() => new AbortController(), []);
     useEffect(() => {
         setLoading(true);
-        askOpenAI(question)
+        askOpenAI(question, controller.signal)
             .then((answer) => {
                 setResult(answer || '');
             })
@@ -68,6 +70,7 @@ function ResultModal(props: Props) {
     }, []);
 
     const handleCancel = () => {
+        controller.abort();
         setOpen(false);
     };
 
