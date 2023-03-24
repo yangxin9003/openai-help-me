@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Button, Form, Input } from 'antd';
 import type { FormInstance } from 'antd';
 import { apiKeyStorage } from '../constant';
@@ -8,7 +8,7 @@ const onFinish = (values: Record<string, any>) => {
 };
 
 const App = () => {
-    const formRef = React.useRef<FormInstance>(null);
+    const formRef = useRef<FormInstance>(null);
     useEffect(() => {
         chrome.storage.local.get(apiKeyStorage).then((result) => {
             formRef?.current?.setFieldValue('apiKey', result[apiKeyStorage]);

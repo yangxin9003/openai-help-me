@@ -1,4 +1,3 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import ResultModal from './result-modal';
 import { StyleProvider } from '@ant-design/cssinjs/es/index';

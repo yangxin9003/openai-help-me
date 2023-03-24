@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Modal, Divider, Spin } from 'antd';
 import { Configuration, OpenAIApi } from 'openai';
 import Draggable from 'react-draggable';
