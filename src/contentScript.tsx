@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import ResultModal from './result-modal';
 import { StyleProvider } from '@ant-design/cssinjs/es/index';
 import resultModalCss from './result-modal.css';
+import type { GetQuestionIntent, IntentMessage, MenuClickIntent } from './background';
 
 let shadowRoot: ShadowRoot;
 function getShadowRoot() {
@@ -17,7 +18,7 @@ function getShadowRoot() {
     return shadowRoot;
 }
 
-chrome.runtime.onMessage.addListener((message, sender, response) => {
+function onMenuClick(menuIndex: number) {
     const selectionText = window.getSelection()?.toString() || '';
     if (!selectionText.replace(/\s/g, '')) {
         return;
@@ -27,23 +28,38 @@ chrome.runtime.onMessage.addListener((message, sender, response) => {
     shadowRoot.appendChild(container);
     const root = createRoot(container);
     try {
-        let question = '';
-        if (message.type === 'ask') {
-            question = selectionText;
-        } else if (message.type === 'translate') {
-            question = `Translate the following Text to chinese:\n\n "${selectionText}"`;
-        }
-        root.render(
-            <StyleProvider container={shadowRoot}>
-                <ResultModal
-                    container={container}
-                    question={question}
-                    afterClose={() => container.remove()}
-                />
-            </StyleProvider>
-        );
+        const getQuestionMessage: GetQuestionIntent = {
+            intent: 'getQuestion',
+            payload: {
+                selectionText,
+                menuIndex: menuIndex,
+            },
+        };
+        chrome.runtime.sendMessage(getQuestionMessage, undefined, (question: string) => {
+            if (question) {
+                root.render(
+                    <StyleProvider container={shadowRoot}>
+                        <ResultModal
+                            container={container}
+                            question={question}
+                            afterClose={() => container.remove()}
+                        />
+                    </StyleProvider>
+                );
+            } else {
+                console.error('getQuestionMessage empty', getQuestionMessage);
+            }
+        });
     } catch (e) {
         container.remove();
+        console.error(e);
+    }
+}
+
+chrome.runtime.onMessage.addListener((message: IntentMessage<string, any>) => {
+    if (message.intent === 'menuClick') {
+        const menuClickPayload = (message as MenuClickIntent).payload;
+        onMenuClick(menuClickPayload.menuIndex);
     }
     return false;
 });

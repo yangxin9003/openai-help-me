@@ -15,7 +15,7 @@ export default `
     display: block;
     padding: 8px;
     margin: 0;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.5em;
     color: #333;
     white-space: pre-wrap;

@@ -1,45 +1,19 @@
-import { useEffect, useRef } from 'react';
-import { Button, Form, Input } from 'antd';
-import type { FormInstance } from 'antd';
-import { apiKeyStorage } from '../constant';
+import { Divider } from 'antd';
+import styled from 'styled-components';
+import BaseForm from './base-form';
+import MenuForm from './menu-form';
 
-const onFinish = (values: Record<string, any>) => {
-    chrome.storage.local.set({ [apiKeyStorage]: values.apiKey });
-};
+const Page = styled.div`
+    padding: 24px;
+`;
 
-const App = () => {
-    const formRef = useRef<FormInstance>(null);
-    useEffect(() => {
-        chrome.storage.local.get(apiKeyStorage).then((result) => {
-            formRef?.current?.setFieldValue('apiKey', result[apiKeyStorage]);
-        });
-    }, []);
+export default function Panel() {
     return (
-        <Form name="basic" ref={formRef} onFinish={onFinish} autoComplete="off">
-            <Form.Item
-                label="API Key"
-                name="apiKey"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input your API Key!',
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                wrapperCol={{
-                    offset: 8,
-                    span: 16,
-                }}
-            >
-                <Button type="primary" htmlType="submit">
-                    Save
-                </Button>
-            </Form.Item>
-        </Form>
+        <Page>
+            <Divider orientation="left">Base Settings</Divider>
+            <BaseForm />
+            <Divider orientation="left">Menu Settings</Divider>
+            <MenuForm />
+        </Page>
     );
-};
-export default App;
+}
