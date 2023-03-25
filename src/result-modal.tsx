@@ -123,17 +123,19 @@ function ResultModal(props: Props) {
                     ) : (
                         <pre>{result}</pre>
                     )}
+                    {!loading && (
+                        <div className="operations">
+                            <Button
+                                className="copy-btn"
+                                type="primary"
+                                size="small"
+                                onClick={() => navigator.clipboard.writeText(result)}
+                            >
+                                copy
+                            </Button>
+                        </div>
+                    )}
                 </div>
-                {!loading && (
-                    <Button
-                        style={{ marginTop: 8 }}
-                        type="primary"
-                        size="small"
-                        onClick={() => navigator.clipboard.writeText(result)}
-                    >
-                        copy
-                    </Button>
-                )}
             </div>
         </Modal>
     );

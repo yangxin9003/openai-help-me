@@ -16,12 +16,11 @@ pnpm run build
 
 ## todo
 
-1. 支持自定义菜单和对应的 question
-2. 支持对话
+1. 支持对话
 
 ## usage
 
-1. Enter API Key
+1. Enter API Key and custom your menus
    ![options page](./readme-assets/options.png)
 
 2. Select text and popup menus

@@ -4,6 +4,7 @@ export default `
     pointer-events: none;
 }
 .open-ai-result-modal-content .open-ai-result-modal-content-answer {
+    position: relative;
     max-height: 300px;
     overflow: auto;
 }
@@ -27,5 +28,14 @@ export default `
 }
 .open-ai-result-modal-content pre.open-ai-result-modal-content-error {
     color: #b3261e;
+}
+.open-ai-result-modal-content-answer .operations {
+    display: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+.open-ai-result-modal-content-answer:hover .operations {
+    display: block;
 }
 `;
