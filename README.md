@@ -2,6 +2,13 @@
 
 A chrome extension for open AI
 
+## [install](https://bashvlas.com/blog/install-chrome-extension-in-developer-mode/)
+1. download [last release](https://github.com/yangxin9003/openai-help-me/releases/latest)
+2. extract the contents of the zip file
+3. open [chrome extensions page](chrome://extensions/) open develop mode
+4. activate developer mode
+5. load unpacked extension
+
 ## build
 
 ```sh
