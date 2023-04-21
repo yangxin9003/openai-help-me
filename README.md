@@ -9,6 +9,18 @@ A chrome extension for open AI
 4. activate developer mode
 5. load unpacked extension
 
+## usage
+
+1. Enter API Key and custom your menus
+   ![options page](./readme-assets/options.png)
+
+2. Select text and popup menus
+   ![menus](./readme-assets/menu.png)
+
+3. Get answer
+   ![result](./readme-assets/result.png)
+
+
 ## build
 
 ```sh
@@ -25,13 +37,3 @@ pnpm run build
 
 1. 支持对话
 
-## usage
-
-1. Enter API Key and custom your menus
-   ![options page](./readme-assets/options.png)
-
-2. Select text and popup menus
-   ![menus](./readme-assets/menu.png)
-
-3. Get answer
-   ![result](./readme-assets/result.png)
